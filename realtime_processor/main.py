@@ -1,4 +1,7 @@
 import time
+import sys
+import os
+sys.path.append('/opt/spark')
 
 from realtime_processor.db.writer import write_to_postgres
 from realtime_processor.kafka.consumer import connect_to_kafka, create_selection_df_from_kafka

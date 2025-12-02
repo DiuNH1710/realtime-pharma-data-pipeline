@@ -56,7 +56,7 @@ def get_total_count():
                 'maxResultCount': 10,
                 'sorting': None,
             }, )
-        res = res.json()
+        res = res.json() #data bây giờ là dict hoặc list
         totalCount = (res["result"])["totalCount"]
 
         return (totalCount)
@@ -135,13 +135,13 @@ def format_data(res, last_crawl_time=None):
 
         modification_time = parse(item["lastModificationTime"])
         modification_time_utc = modification_time.astimezone(timezone.utc)
-
+# neu du lieu cu hơn ngưỡng đó thì bỏ qua (continue) ngược lại thì giữ bản ghi đó
         if last_crawl_time:
             threshold_time = last_crawl_time - timedelta(days=1)
             if modification_time_utc <= threshold_time:
                 continue
         else:
-            # Trường hợp chưa có last_crawl_time thì xử lý sao? Có thể lấy hết
+
             pass
 
         # list_items.append({ item["maTiepNhan"], item["tenCoSoSX"], item["tenThuongMai"]})
@@ -165,7 +165,7 @@ def extract_dvc_data():
     skip_count = 0
 
     producer = KafkaProducer(bootstrap_servers=['kafka:9092'], max_block_ms=5000)
-    while skip_count < total_count+100:
+    while skip_count < 1000:
         # total_count+100:
 
         try:

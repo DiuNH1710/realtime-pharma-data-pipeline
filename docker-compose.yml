@@ -145,41 +145,38 @@ services:
       - de-network
 
   spark-master:
-    image: bitnami/spark:3.5.0
+    image: apache/spark:3.5.1
     container_name: spark-master
     ports:
       - "7077:7077"
       - "9090:8080"
-    command: bin/spark-class org.apache.spark.deploy.master.Master
+    command: [ "/opt/spark/bin/spark-class", "org.apache.spark.deploy.master.Master" ]
     volumes:
-      - ./jars/postgresql-42.2.18.jar:/opt/bitnami/spark/jars/postgresql-42.2.18.jar
-      - ./jars/spark-sql-kafka-0-10_2.12-3.5.0.jar:/opt/bitnami/spark/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar
-      - ./jars/kafka-clients-3.5.0.jar:/opt/bitnami/spark/jars/kafka-clients-3.5.0.jar
-      - ./jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar:/opt/bitnami/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar
-      - ./jars/commons-pool2-2.11.1.jar:/opt/bitnami/spark/jars/commons-pool2-2.11.1.jar
-#      - ./jars:/opt/bitnami/spark/jars
-#      - ./realtime_data_processing.py:/opt/bitnami/spark/realtime_data_processing.py
-      - ./realtime_processor:/opt/bitnami/spark/realtime_processor
-
+      - ./jars/postgresql-42.2.18.jar:/opt/spark/jars/postgresql-42.2.18.jar
+      - ./jars/spark-sql-kafka-0-10_2.12-3.5.0.jar:/opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar
+      - ./jars/kafka-clients-3.5.0.jar:/opt/spark/jars/kafka-clients-3.5.0.jar
+      - ./jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar:/opt/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar
+      - ./jars/commons-pool2-2.11.1.jar:/opt/spark/jars/commons-pool2-2.11.1.jar
+      - ./realtime_processor:/opt/spark/realtime_processor
     networks:
       - de-network
 
   spark-worker:
-    image: bitnami/spark:3.5.0
+    image: apache/spark:3.5.1
     container_name: spark-worker
     depends_on:
       - spark-master
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    command: [ "/opt/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "spark://spark-master:7077" ]
     environment:
-      SPARK_MODE: worker
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 2G
     volumes:
-      - ./jars/postgresql-42.2.18.jar:/opt/bitnami/spark/jars/postgresql-42.2.18.jar
-      - ./jars/spark-sql-kafka-0-10_2.12-3.5.0.jar:/opt/bitnami/spark/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar
-      - ./jars/kafka-clients-3.5.0.jar:/opt/bitnami/spark/jars/kafka-clients-3.5.0.jar
-      - ./jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar:/opt/bitnami/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar
-      - ./jars/commons-pool2-2.11.1.jar:/opt/bitnami/spark/jars/commons-pool2-2.11.1.jar
-#      - ./realtime_data_processing.py:/opt/bitnami/spark/realtime_data_processing.py
-      - ./realtime_processor:/opt/bitnami/spark/realtime_processor
+      - ./jars/postgresql-42.2.18.jar:/opt/spark/jars/postgresql-42.2.18.jar
+      - ./jars/spark-sql-kafka-0-10_2.12-3.5.0.jar:/opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar
+      - ./jars/kafka-clients-3.5.0.jar:/opt/spark/jars/kafka-clients-3.5.0.jar
+      - ./jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar:/opt/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar
+      - ./jars/commons-pool2-2.11.1.jar:/opt/spark/jars/commons-pool2-2.11.1.jar
+      - ./realtime_processor:/opt/spark/realtime_processor
     networks:
       - de-network
 
