@@ -1,4 +1,4 @@
-# 💊 Real-Time Pharmaceutical Data Streaming Pipeline (DVC Version)
+# 💊 Real-Time Pharmaceutical Data Streaming Pipeline 
 This project implements a **real-time ingestion, transformation, and analytics pipeline** for pharmaceutical data in Vietnam.
 It automatically **crawls, streams, processes, and stores official drug information** from the Vietnamese pharmaceutical regulatory portal:
 
